@@ -1,30 +1,39 @@
-from fastapi import Depends, HTTPException, Request, status
+from typing import Annotated, Any, Mapping
 
-UserAlreasyExistException = HTTPException(
-    status_code=status.HTTP_409_CONFLICT, 
-    detail='User is already exist',
-)
+from annotated_doc import Doc
+from fastapi import HTTPException, status
 
-IncorrectEmailOrPasswordException = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
+
+class BookingException(HTTPException):
+    status_code = 500
+    detail = ''
+
+    def __init__(self):
+        super().__init__(status_code=self.status_code, detail=self.detail)
+
+
+class UserAlreasyExistException(BookingException):
+    status_code=status.HTTP_409_CONFLICT
+    detail='User is already exist'
+
+class IncorrectEmailOrPasswordException(BookingException):
+    status_code=status.HTTP_401_UNAUTHORIZED
     detail='Incorect pass/email'
-    )
+    
 
-TokenExpiredException = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
-    detail='Token expired',
-)
+class TokenExpiredException(BookingException):
+    status_code=status.HTTP_401_UNAUTHORIZED
+    detail='Token expired'
 
-TokenAbsentException =  HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
-    detail='Token absence',
-)
 
-IncorrectTokenFormatException = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
-    detail='Incorrect format of token',
-)
+class TokenAbsentException(BookingException):
+    status_code=status.HTTP_401_UNAUTHORIZED
+    detail='Token absence'
 
-UserIsNotPresentException = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
-)
+
+class IncorrectTokenFormatException(BookingException):
+    status_code=status.HTTP_401_UNAUTHORIZED
+    detail='Incorrect format of token'
+
+class UserIsNotPresentException(BookingException):
+    status_code=status.HTTP_401_UNAUTHORIZED
