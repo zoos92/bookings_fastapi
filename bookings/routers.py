@@ -18,6 +18,11 @@ async def get_bookings(user: Users = Depends(get_current_user)) -> list[SBooking
     result = BookingDAO.find_all(user_id=user.id)
     return await result
 
+@router.post('')
+async def add_booking(user: Users = Depends(get_current_user)) -> list[SBooking]:
+    result = BookingDAO.add(user_id=user.id)
+    return await result
+
 @router.get('/get_book_by_id')
 async def get_book_by_id():
     result = BookingDAO.find_by_id(4)
