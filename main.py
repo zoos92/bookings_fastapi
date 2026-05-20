@@ -78,12 +78,13 @@ from sqlalchemy import select
 import time
 from bookings.routers import router as router_bookings
 from users.router import router as router_users
-
+from pages.router import router as pages_router
 
 app = FastAPI()
 
 app.include_router(router_users)
 app.include_router(router_bookings)
+app.include_router(pages_router)
 
 engine = create_async_engine('sqlite+aiosqlite:///books.db')
 
