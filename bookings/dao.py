@@ -5,7 +5,7 @@ from sqlalchemy import and_, func, insert, or_, select
 from dao.base import BaseDAO
 from bookings.models import Bookings
 from database import async_session_maker, engine
-from rooms.models import Rooms
+from hotels.rooms.models import Rooms
 
 
 class BookingDAO(BaseDAO):
@@ -38,7 +38,7 @@ class BookingDAO(BaseDAO):
                                                 and_(
                                                     Bookings.date_to >= date_from, Bookings.date_to <= date_to
                                                     ))),
-                                                    Bookings.room_id == 1).cte('booked_rooms')
+                                                    Bookings.room_id == room_id).cte('booked_rooms')
             get_rooms_left = select(
                 (Rooms.quantity - func.count(booked_rooms.c.room_id)).label('rooms_left')
                 ).select_from(Rooms).join(
